@@ -1,0 +1,59 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ # All Vagrant configuration is done below. The "2" in Vagrant.configure
+    # configures the configuration version (we support older styles for
+    # backwards compatibility). Please don't change it unless you know what
+    # you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/centos7"
+  config.vm.provider "hyperv"
+  config.vm.network "public_network"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.ssh.username = "vagrant"
+  config.ssh.private_key_path=["~/.vagrant.d/insecure_private_key"]
+  config.ssh.insert_key = false
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   yum update
+  # SHELL
+  config.vm.provider "hyperv" do |hv|
+    hv.enable_virtualization_extensions = true
+    hv.linked_clone = true
+  end
+  config.vm.define "centos7-jump" do |centos7jump|
+    centos7jump.vm.box = "generic/centos7"
+    centos7jump.vm.network "private_network", type: "dhcp"
+    centos7jump.vm.provider "hyperv" do |hv|
+      hv.memory = 1024  # Set memory in MB
+      hv.cpus = 2       # Set number of CPUs
+      # hv.name = "vm1"   # Set custom name for the machine
+    end
+  end
+  config.vm.define "centos7-first" do |centos7first|
+    centos7first.vm.box = "generic/centos7"
+    centos7first.vm.network "private_network", type: "dhcp"
+    centos7first.vm.provider "hyperv" do |hv|
+      hv.memory = 1024  # Set memory in MB
+      hv.cpus = 2       # Set number of CPUs
+      # hv.name = "vm1"   # Set custom name for the machine
+    end
+  end
+  config.vm.define "centos7-second" do |centos7second|
+    centos7second.vm.box = "generic/centos7"
+    centos7second.vm.network "private_network", type: "dhcp"
+    centos7second.vm.provider "hyperv" do |hv|
+      hv.memory = 1024  # Set memory in MB
+      hv.cpus = 2       # Set number of CPUs
+      # hv.name = "vm1"   # Set custom name for the machine
+    end
+  end
+  config.vm.define "centos7-third" do |centos7third|
+    centos7third.vm.box = "generic/centos7"
+    centos7third.vm.network "private_network", type: "dhcp"
+    centos7third.vm.provider "hyperv" do |hv|
+      hv.memory = 1024  # Set memory in MB
+      hv.cpus = 2       # Set number of CPUs
+      # hv.name = "vm1"   # Set custom name for the machine
+    end
+  end  
+end
