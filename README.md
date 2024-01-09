@@ -41,4 +41,19 @@ the comments in the Vagrantfile as well as documentation on
 `vagrantup.com` for more information on using Vagrant.
 PS C:\vagrant_tests\vagrant_virtualbox>
 
+#######
 
+before running "vagrant up" , you can run "vagrant status"
+
+PS D:\Vagrant\certified-kubernetes-administrator-course\kubeadm-clusters\hyperv> vagrant status
+Current machine states:
+
+kubemaster                not_created (hyperv)
+kubenode01                not_created (hyperv)
+kubenode02                not_created (hyperv)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`.
+
+#######
