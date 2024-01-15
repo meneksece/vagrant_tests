@@ -43,14 +43,26 @@ sudo apt-get update
 
 sudo apt-get install -y containerd.io
 
-#  To use the systemd cgroup driver in /etc/containerd/config.toml with runc, set
 sudo cat <<EOF | sudo tee /etc/containerd/config.toml
-[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-    SystemdCgroup = true
+version = 2
+# The 'plugins."io.containerd.grpc.v1.cri"' table contains all of the server options.
+[plugins."io.containerd.grpc.v1.cri"]
+  stream_server_address = "127.0.0.1"
+  stream_server_port = "0"
+  stream_idle_timeout = "4h"
+  enable_selinux = false
+# sandbox_image is the image used by sandbox container.
+  sandbox_image = "registry.k8s.io/pause:3.9"
+# 'plugins."io.containerd.grpc.v1.cri".containerd' contains config related to containerd
+  [plugins."io.containerd.grpc.v1.cri".containerd]
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+      cni_conf_dir = "/etc/cni/net.d"
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+        SystemdCgroup = true
 EOF
 #for changes to take affect
 sudo systemctl restart containerd
+
 
 
 
