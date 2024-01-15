@@ -61,13 +61,10 @@ version = 2
         SystemdCgroup = true
 EOF
 #for changes to take affect
-sudo systemctl restart containerd
+sudo systemctl restart contained
 
-
-
-
-
-
+# since we created another interface enp0s8 here, we should add a route for the pod network to use this interface #
+sudo ip route add 10.244.0.0/16 via 192.168.56.1 dev enp0s8
 
 #These instructions are for Kubernetes 1.29.
 #Update the apt package index and install packages needed to use the Kubernetes apt repository:
