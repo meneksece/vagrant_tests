@@ -43,28 +43,23 @@ sudo apt-get update
 
 sudo apt-get install -y containerd.io
 
-sudo cat <<EOF | sudo tee /etc/containerd/config.toml
-version = 2
-# The 'plugins."io.containerd.grpc.v1.cri"' table contains all of the server options.
-[plugins."io.containerd.grpc.v1.cri"]
-  stream_server_address = "127.0.0.1"
-  stream_server_port = "0"
-  stream_idle_timeout = "4h"
-  enable_selinux = false
-# sandbox_image is the image used by sandbox container.
-  sandbox_image = "registry.k8s.io/pause:3.9"
-# 'plugins."io.containerd.grpc.v1.cri".containerd' contains config related to containerd
-  [plugins."io.containerd.grpc.v1.cri".containerd]
-    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-      cni_conf_dir = "/etc/cni/net.d"
-      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-        SystemdCgroup = true
-EOF
+#  To use the systemd cgroup driver in /etc/containerd/config.toml with runc, set
+#[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+#  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+#    SystemdCgroup = true
+#EOF
 #for changes to take affect
-sudo systemctl restart contained
+#sudo systemctl restart containerd
 
-# since we created another interface enp0s8 here, we should add a route for the pod network to use this interface #
-sudo ip route add 10.244.0.0/16 via 192.168.56.1 dev enp0s8
+
+#Customizing containerd
+#containerd uses a configuration file located in /etc/containerd/config.toml for specifying daemon level options. A sample configuration file can be found here.
+#The default configuration can be generated via containerd config default > /etc/containerd/config.toml.
+sudo containerd config default > /etc/containerd/config.toml
+#and then do vi and change SystemdCgroup = false to true, also change pause:3.6 to 3.9
+##for changes to take affect
+sudo systemctl restart containerd
+
 
 #These instructions are for Kubernetes 1.29.
 #Update the apt package index and install packages needed to use the Kubernetes apt repository:
@@ -83,6 +78,11 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 
+
+# since we created another interface enp0s8 here, we should add a route for the pod network to use this interface #
+sudo ip route add 10.244.0.0/16 via 192.168.56.1 dev enp0s8
+
+
 #crictl config \
 #    --set runtime-endpoint=unix:///run/containerd/containerd.sock \
 #    --set image-endpoint=unix:///run/containerd/containerd.sock
@@ -91,4 +91,3 @@ sudo apt-mark hold kubelet kubeadm kubectl
 #KUBELET_EXTRA_ARGS='--node-ip $(ip -4 addr show enp0s8 | grep "inet" | head -1 |awk '{print $2}' | cut -d/ -f1)'
 #EOF
 }
-
