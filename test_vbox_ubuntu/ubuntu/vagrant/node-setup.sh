@@ -43,15 +43,6 @@ sudo apt-get update
 
 sudo apt-get install -y containerd.io
 
-#  To use the systemd cgroup driver in /etc/containerd/config.toml with runc, set
-#[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-#  [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-#    SystemdCgroup = true
-#EOF
-#for changes to take affect
-#sudo systemctl restart contained
-
-
 #Customizing containerd
 #containerd uses a configuration file located in /etc/containerd/config.toml for specifying daemon level options. A sample configuration file can be found here.
 
@@ -59,7 +50,6 @@ sudo apt-get install -y containerd.io
 #The default configuration can be generated via containerd config default > /etc/containerd/config.toml.
 #and then do vi and change SystemdCgroup = false to true, also change pause:3.6 to 3.9
 config_file="/etc/containerd/config.toml"
-
 
 ##for changes to take affect
 sudo systemctl restart containerd
@@ -69,7 +59,8 @@ sudo systemctl restart containerd
 # this is the page to follow, scroll directly to the STEP 3... --> https://github.com/containerd/containerd/blob/main/docs/getting-started.md  
 #Download the cni-plugins-<OS>-<ARCH>-<VERSION>.tgz archive from https://github.com/containernetworking/plugins/releases , verify its sha256sum, and extract it under /opt/cni/bin:
 #cni-plugins-linux-amd64-v1.4.0.tgz was safe to install!
-
+$ sudo mkdir -p /opt/cni/bin
+$ sudo tar Cxzvf /opt/cni/bin /home/vagrant/cni-plugins-linux-amd64-v1.4.0.tgz
 
 
 #These instructions are for Kubernetes 1.29.
