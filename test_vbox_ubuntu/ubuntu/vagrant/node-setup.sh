@@ -82,6 +82,8 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 
 # since we created another interface enp0s8 here, we should add a route for the pod network to use this interface #
+sudo apt install net-tools
+sleep 10
 sudo ip route add 10.244.0.0/16 via 192.168.56.1 dev enp0s8
 
 
