@@ -20,7 +20,7 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0
 # Before creating this manifest, read its contents and make sure its settings are correct for your environment. For example, you may need to change the default IP pool CIDR to match your pod network CIDR.
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/custom-resources.yaml
 
-#Confirm that all of the pods are running with the following command.
+#Wait until confirm that all of the pods are running with the following command. 
 watch kubectl get pods -n calico-system
 
 #Remove the taints on the control plane so that you can schedule pods on it.
