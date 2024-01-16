@@ -85,6 +85,10 @@ sudo apt-mark hold kubelet kubeadm kubectl
 sudo apt install net-tools
 sleep 10
 sudo ip route add 10.244.0.0/16 via 192.168.56.1 dev enp0s8
+# sometimes it doesnt add the route with this command to the vagrant server for some reason, as a workaround, modify the 01-netcfg.yaml file and add it under /etc/netplan directory and run it as shown below.
+#sudo vi /etc/netplan/01-netcfg.yaml
+#sudo netplan apply
+
 
 ## optional section ##
 #Container Runtime Interface (CRI) CLI
