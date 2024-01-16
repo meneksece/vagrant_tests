@@ -86,6 +86,14 @@ sudo apt install net-tools
 sleep 10
 sudo ip route add 10.244.0.0/16 via 192.168.56.1 dev enp0s8
 
+## optional section ##
+#Container Runtime Interface (CRI) CLI
+# crictl provides a CLI for CRI-compatible container runtimes. This allows the CRI runtime developers to debug their runtime without needing to set up Kubernetes components.(still beta)
+# here is the releases page, always get the latest release --> https://github.com/kubernetes-sigs/cri-tools/releases 
+#VERSION="v1.29.0" # check latest version in /releases page
+#wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
+#sudo tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin
+#rm -f crictl-$VERSION-linux-amd64.tar.gz
 
 #crictl config \
 #    --set runtime-endpoint=unix:///run/containerd/containerd.sock \
