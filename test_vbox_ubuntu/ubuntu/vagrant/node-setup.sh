@@ -49,16 +49,27 @@ sudo apt-get install -y containerd.io
 #    SystemdCgroup = true
 #EOF
 #for changes to take affect
-#sudo systemctl restart containerd
+#sudo systemctl restart contained
 
 
 #Customizing containerd
 #containerd uses a configuration file located in /etc/containerd/config.toml for specifying daemon level options. A sample configuration file can be found here.
+
+# when running this with sudo it still gives you permission denied error. So the best thing to do is doing it manually, sudo -i and then run "containerd config default > /etc/containerd/config.toml"
 #The default configuration can be generated via containerd config default > /etc/containerd/config.toml.
-sudo containerd config default > /etc/containerd/config.toml
 #and then do vi and change SystemdCgroup = false to true, also change pause:3.6 to 3.9
+config_file="/etc/containerd/config.toml"
+
+
 ##for changes to take affect
 sudo systemctl restart containerd
+
+# then we should do cni config
+#Step 3: Installing CNI plugins
+# this is the page to follow, scroll directly to the STEP 3... --> https://github.com/containerd/containerd/blob/main/docs/getting-started.md  
+#Download the cni-plugins-<OS>-<ARCH>-<VERSION>.tgz archive from https://github.com/containernetworking/plugins/releases , verify its sha256sum, and extract it under /opt/cni/bin:
+#cni-plugins-linux-amd64-v1.4.0.tgz was safe to install!
+
 
 
 #These instructions are for Kubernetes 1.29.
